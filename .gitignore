@@ -1,0 +1,37 @@
+# files in log directories
+*/log/*
+*.log
+*.pid
+*.output
+*.orig
+
+# anything in tmp/ directories
+/tmp/*
+*/tmp/*
+
+# gems in pkg/ directories (for libraries)
+lib/*/pkg/*.gem
+
+# the doc-directory
+*/doc/*
+
+# rcov output
+coverage.data
+coverage/
+
+# ruby-prof output
+profile
+
+# OS X specific files
+*.DS_Store
+
+# the backup-files Kate (a KDE-editor) writes
+.*~
+
+# dot-directory files
+.directory
+*/.directory
+
+.yardoc
+debug.log
+
