@@ -13,8 +13,9 @@ class TweetDownloader
     @tweet_dir = directory
   end
 
+  # I just realized that I don't know for sure if status ids are increasing...
   def since_id
-    File.basename(Dir.glob("#{tweet_dir}/*.json").sort.last, ".json") rescue 1
+    Dir.glob("#{tweet_dir}/*.json").map { |f| File.basename(f, ".json").to_i rescue 1 }.max
   end
 
   def download_tweets(options = {})

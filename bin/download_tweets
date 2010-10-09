@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-puts "This program lets you download all the tweets for a given Twitter username."
+puts "Download all tweets from a certain Twitter timeline."
 
 require 'optparse'
 options = {}
