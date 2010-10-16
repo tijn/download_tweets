@@ -39,9 +39,8 @@ class TweetDownloader
   def save_tweets(tweets)
     tweets.each do |tweet|
       next if File.exists?(filename(tweet))
-      File.open(filename(tweet), 'w') do |f|
-        f.puts tweet.to_json
-      end
+      File.open(filename(tweet), 'w') { |f| f.puts tweet.to_json }
+      STDERR.puts "#{tweet["created_at"]}\t#{tweet["text"]}"
     end
   rescue
     STDERR.puts tweets.inspect
@@ -69,3 +68,4 @@ class TweetDownloader
     json
   end
 end
+
