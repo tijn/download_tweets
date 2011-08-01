@@ -7,6 +7,9 @@ require 'json'
 class TweetDownloader
   attr_reader :user, :tweet_dir
 
+  # twitter wants 150 requests per hour at max, we're being nice, so we sleep about 30 seconds before doing a new request
+  SLEEPY_TIME = 3600 / 120
+
   def initialize(username, directory)
     raise "username is incorrect: #{username.inspect}" if username.nil? or username.empty?
     @user = username
@@ -25,8 +28,7 @@ class TweetDownloader
     STDERR.puts "#{tweets.size} tweets"
     save_tweets(tweets)
     unless tweets.empty?
-      # twitter wants 150 requests per hour at max, we're being nice, so we sleep about 30 seconds before doing a new request
-      sleep (3600 / 120)
+      sleep (SLEEPY_TIME)
       # twitter starts counting pages at 1 (not a zero)
       download_tweets(options.merge(:page => (options[:page] || 1) + 1))
     end

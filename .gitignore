@@ -27,6 +27,7 @@ profile
 
 # the backup-files Kate (a KDE-editor) writes
 .*~
+.*.swp
 
 # dot-directory files
 .directory
