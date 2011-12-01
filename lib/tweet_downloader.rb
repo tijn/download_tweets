@@ -50,10 +50,11 @@ class TweetDownloader
   def page_path(options = {})
     path = "/statuses/user_timeline/#{@user}.json"
     unless options.empty?
-      opts = options.to_a.map { |x| "#{x.first}=#{x.last}" }
+      opts = options.map do |k,v|
+        next if v.nil?
+        "#{k}=#{v}"
+      end
       "#{path}?#{opts.join("&")}"
-    else
-      path
     end
   end
 

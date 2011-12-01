@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler/setup'
+
 puts "Download all tweets from a certain Twitter timeline."
 
 require 'optparse'
