@@ -15,7 +15,7 @@ class TweetDownloader
     raise "username is incorrect: #{username.inspect}" if username.nil? or username.empty?
     @user = username
     @tweet_dir = directory
-    @requests = 0
+    @requests_remaining = MAX_REQUESTS
   end
 
   # I just realized that I don't know for sure if status ids are increasing...
@@ -82,19 +82,20 @@ class TweetDownloader
   end
 
   def fetch_page(options = {})
+    return if @requests_remaining == 0
     STDERR.puts "Fetching page... #{options.inspect}"
     json = ""
     req = Net::HTTP.start('twitter.com') do |http|
       http.read_timeout = 600
       response = http.get(page_path(options))
+      @requests_remaining = response["x-ratelimit-remaining"].to_i
       json = JSON.parse(response.body)
     end
-    @requests += 1
     json
   end
 
   def download_in_reply_to(options = {})
-    return if @requests >= MAX_REQUESTS
+    return if @requests_remaining == 0
     count = 0
     Dir.glob("#{tweet_dir}/*").each do |file|
       tweet = JSON.parse(File.read(file))
@@ -108,19 +109,20 @@ class TweetDownloader
         end
       end      
     end
-    return count + fetch_in_reply_to(options) unless count == 0
+    return count + download_in_reply_to(options) unless count == 0
   end
 
   def fetch_one_tweet(id)
-    return if @requests >= MAX_REQUESTS
+    puts "@requests_remaining " + @requests_remaining.to_s
+    return if @requests_remaining == 0
     STDERR.puts "Fetching tweet #{id}..."
     json = ""
     req = Net::HTTP.start('api.twitter.com') do |http|
       http.read_timeout = 600
       response = http.get(show_path(:id => id, :include_entities => true))
+      @requests_remaining = response["x-ratelimit-remaining"].to_i
       json = JSON.parse(response.body)
     end
-    @requests += 1
     json
   end
 end
