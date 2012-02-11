@@ -15,4 +15,4 @@ end
 
 $:.unshift "#{File.dirname(__FILE__)}/../lib/"
 require 'tweet_downloader'
-TweetDownloader.new(options[:user], options[:directory]).download_tweets
+TweetDownloader.new(options[:user], options[:directory]).go
