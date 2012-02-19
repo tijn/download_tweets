@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler/setup'
+
+puts "Download all tweets from a certain Twitter timeline."
+
+require 'optparse'
+options = {}
+OptionParser.new do |opt|
+  opt.banner = "Usage: download_tweets [options] id"
+  opt.on('-u', '--user USERNAME', 'specify username') { |v| options[:user] = v }
+  opt.on('-d', '--dir DIRECTORY', 'specify download directory') { |v| options[:directory] = v }
+  opt.on('-i', '--id ID', 'specify tweet id') { |tweet_id| options[:tweet_id] = tweet_id }
+  opt.parse!(ARGV)
+end
+
+$:.unshift "#{File.dirname(__FILE__)}/../lib/"
+require 'tweet_downloader'
+TweetDownloader.new(options[:user], options[:directory]).fetch_one_tweet(options[:tweet_id])
