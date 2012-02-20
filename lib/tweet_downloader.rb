@@ -98,7 +98,7 @@ class TweetDownloader
 
   def fetch_one_tweet(id)
     Twitter.status(id)
-  rescue Twitter::Error::NotFound => error
+  rescue Twitter::Error => error
     File.open(filename_for_fail(id), 'w') { |f| f.puts error }
     return nil
   rescue
