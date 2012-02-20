@@ -83,7 +83,7 @@ class TweetDownloader
   def download_in_reply_to(options = {})
     count = 0
     Dir.glob("#{tweet_dir}/*.json").each do |file|
-      tweet = JSON.parse(File.read(file))
+      tweet = JSON.parse(File.read(file, :encoding => 'utf-8'))
       if id = tweet["in_reply_to_status_id"]
         next if File.exist?(filename_for_id(id)) 
         next if fails.include?(id)
